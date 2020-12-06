@@ -1,9 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
+	"math/rand"
 	"net/http"
+	"time"
+
+	"github.com/oklog/ulid"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -29,8 +34,18 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	mux := http.NewServeMux()
+
 	mux.HandleFunc("/", home)
 	log.Println("Starting server on :4000")
+	id := genUlid()
+	fmt.Printf("github.com/oklog/ulid %s\n", id.String())
 	err := http.ListenAndServe(":4000", mux)
 	log.Fatal(err)
+}
+
+func genUlid() ulid.ULID {
+	t := time.Now().UTC()
+	entropy := rand.New(rand.NewSource(t.UnixNano()))
+	id := ulid.MustNew(ulid.Timestamp(t), entropy)
+	return id
 }
