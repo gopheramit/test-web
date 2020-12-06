@@ -12,7 +12,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 		"./ui/html/home.page.tmpl",
 		"./ui/html/base.layout.tmpl",
 	}
-
+git init
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
 		log.Println(err.Error())
@@ -33,4 +33,5 @@ func main() {
 	log.Println("Starting server on :4000")
 	err := http.ListenAndServe(":4000", mux)
 	log.Fatal(err)
+	
 }
